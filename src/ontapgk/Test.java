@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Test {
-	public static void main(String[] args) {
-		DanhSachSach dsSach=new DanhSachSach(0);
+	public static void main(String[] args) throws Exception {
+		DanhSachSach dsSach=new DanhSachSach(10);
 		Scanner sc=new Scanner(System.in);
 		int chon;
 		do {
@@ -14,7 +14,11 @@ public class Test {
 								+"2.Them sach vao danh sach.\r\n"
 								+"3.Xuat ra toan bo sach.\r\n"
 								+"4.Tim sach.\r\n"
-								+"5.Xoa sach.\r\n"
+								+"5.Sap xep theo gia sach giam dan.\r\n"
+								+"6.Tim sach co gia cao nhat.\r\n"
+								+"7.Xoa sach.\r\n"
+								+"8.Tim sach theo tua sach.\r\n"
+								+"9.Sap xep theo tua sach tang dan.\r\n"
 								+"Ban chon: ");
 			chon=sc.nextInt();
 			switch (chon) {
@@ -48,19 +52,21 @@ public class Test {
 					sc.nextLine();
 					System.out.println("Nhap vao ten tac gia");
 					String tacGia=sc.nextLine();
+					
 					try {
 						Sach sach=new Sach(maSach,tuaSach,giaSach,ngayNhap,tacGia);
 						if(dsSach.themSach(sach)) {
 							System.out.println("\nThem Sach Thanh Cong.");
 						}
 					} catch (Exception e) {
+						System.out.println(e);
 						System.out.println("\nThem Sach that bai. ");
 					}
 				}
 				break;
 			}
 			case 3:{
-				System.out.println(String.format("%15s %15s %15s %15s %15s", "Ma Sach","Tua Sach","Gia Sach","Ngay Nhap","Ten Tac Gia"));
+				System.out.println(String.format("%-15s %-15s %-15s %-15s %-15s", "Ma Sach","Tua Sach","Gia Sach","Ngay Nhap","Ten Tac Gia"));
 				System.out.println(dsSach.xuatToanBoSach());
 				break;
 			}
@@ -73,12 +79,26 @@ public class Test {
 					System.out.println("Khong tim thay sach.");
 				}
 				else {
-					System.out.println(String.format("%15s %15s %15s %15s %15s", "Ma Sach","Tua Sach","Gia Sach","Ngay Nhap","Ten Tac Gia"));
+					System.out.println(String.format("%-15s %-15s %-15s %-15s %-15s", "Ma Sach","Tua Sach","Gia Sach","Ngay Nhap","Ten Tac Gia"));
 					System.out.println(sach);
 				}
 				break;
 			}
 			case 5:{
+				dsSach.sapXepGiamDanTheoMaGia();
+				System.out.println(String.format("%-15s %-15s %-15s %-15s %-15s", "Ma Sach","Tua Sach","Gia Sach","Ngay Nhap","Ten Tac Gia"));
+				System.out.println(dsSach.xuatToanBoSach());
+				break;
+			}
+			case 6:{
+				Sach [] dsSachCaoNhat=dsSach.timSachGiaCaoNhat();
+				System.out.println(String.format("%-15s %-15s %-15s %-15s %-15s", "Ma Sach","Tua Sach","Gia Sach","Ngay Nhap","Ten Tac Gia"));
+				for(Sach sach:dsSachCaoNhat) {
+					System.out.println(sach+"\n");
+				}
+				break;
+			}
+			case 7:{
 				System.out.println("Nhap vao ma sach muon xoa: ");
 				int maSach=sc.nextInt();
 				if(dsSach.xoaSach(maSach)) {
@@ -89,6 +109,23 @@ public class Test {
 				}
 				break;
 				
+			}
+			case 8:{
+				sc.nextLine();
+				System.out.println("Nhap vao chuoi muon tim: ");
+				String keyword=sc.nextLine();
+				Sach[] dsTua=dsSach.timSachTheoTuaSach(keyword);
+				for(Sach sach:dsTua) {
+					System.out.println(sach);
+				}
+				break;
+				
+			}
+			case 9:{
+				dsSach.sapXepTheoTuaSachTangDan();
+				System.out.println(String.format("%-15s %-15s %-15s %-15s %-15s", "Ma Sach","Tua Sach","Gia Sach","Ngay Nhap","Ten Tac Gia"));
+				System.out.println(dsSach.xuatToanBoSach());
+				break;
 			}
 			default:
 				System.out.println("Lua chon khong hop le");

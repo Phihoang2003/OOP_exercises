@@ -1,6 +1,9 @@
 package ontapgk;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+
 
 public class Sach {
 	private int maSach;
@@ -72,7 +75,9 @@ public class Sach {
 	
 	@Override
 	public String toString() {
-		return String.format("%15d %15s %15.2f %15s %15s", maSach,tuaSach,giaSach,ngayNhap,tacGia);
+		DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String formattedDate=ngayNhap.format(formatter);
+		return String.format("%-15d %-15s %-15.2f %-15s %-15s", maSach,tuaSach,giaSach,formattedDate,tacGia);
 	}
 	
 
