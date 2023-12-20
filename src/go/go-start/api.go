@@ -1,9 +1,15 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 type book struct {
@@ -31,8 +37,16 @@ func createBook(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newBook)
 }
 func main() {
+	godotenv.Load()
 	router := gin.Default()
-	router.GET("/books", getBooks)
-	router.POST("/books", createBook)
+	// router.GET("/books", getBooks)
+	// router.POST("/books", createBook)
+
+	dsn := os.Getenv("DB_URL")
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(db)
 	router.Run("localhost:8080")
 }
